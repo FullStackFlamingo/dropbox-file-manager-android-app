@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/switch_to_list"
+        android:visible="false"
+        android:icon="@drawable/ic_calendar_today_24px"
+        android:title="Refresh"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/switch_to_card"
+        android:icon="@drawable/ic_calendar_today_24px"
+        android:title="Refresh"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/refresh"
+        android:icon="@drawable/ic_refresh_24px"
+        android:title="Refresh"
+        app:showAsAction="always" />
+
+    <!--    TODO: open dialog via MainActivity to set dropbox access token-->
+    <!--    <item android:id="@+id/settings"-->
+    <!--        android:title="Settings" app:showAsAction="never" />-->
+<!--    <item-->
+<!--        android:id="@+id/test"-->
+<!--        android:title="Test"-->
+<!--        app:showAsAction="never" />-->
+</menu>
