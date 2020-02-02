@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/folder_file_list_item"
+    android:id="@+id/listitem"
     android:background="?selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
     <RelativeLayout
         android:layout_width="80dp"
         android:layout_height="80dp">
 
         <ImageView
-            android:id="@+id/folder_file_list_item_image"
+            android:id="@+id/listitem__image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
             android:scaleType="centerCrop"/>
 
         <ProgressBar
-            android:id="@+id/folder_file_list_item_spinner"
+            android:id="@+id/listitem__spinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible" />
     </RelativeLayout>
     <TextView
-        android:id="@+id/folder_file_list_item_text"
+        android:id="@+id/listitem__text"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

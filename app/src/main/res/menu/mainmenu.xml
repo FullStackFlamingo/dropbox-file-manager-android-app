@@ -6,12 +6,12 @@
         android:id="@+id/switch_to_list"
         android:visible="false"
         android:icon="@drawable/ic_calendar_today_24px"
-        android:title="Refresh"
+        android:title="Switch to list view"
         app:showAsAction="always" />
     <item
         android:id="@+id/switch_to_card"
-        android:icon="@drawable/ic_calendar_today_24px"
-        android:title="Refresh"
+        android:icon="@drawable/ic_folder_24px"
+        android:title="Swtich to card view"
         app:showAsAction="always" />
     <item
         android:id="@+id/refresh"

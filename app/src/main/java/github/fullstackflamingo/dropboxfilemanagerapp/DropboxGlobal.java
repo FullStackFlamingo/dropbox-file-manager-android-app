@@ -7,6 +7,7 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.FolderMetadata;
 import com.dropbox.core.v2.files.Metadata;
 
 public class DropboxGlobal {
@@ -34,4 +35,11 @@ public class DropboxGlobal {
         return type != null && type.startsWith("image/");
     }
 
+    public static boolean isMetaDataAFolder(Metadata md) {
+        return md instanceof FolderMetadata;
+    }
+
+    public static boolean isMetaDataAFile(Metadata md) {
+        return md instanceof FileMetadata;
+    }
 }

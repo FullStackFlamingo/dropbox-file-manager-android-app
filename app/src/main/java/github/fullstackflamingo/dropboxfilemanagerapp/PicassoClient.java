@@ -12,12 +12,13 @@ import com.squareup.picasso.Picasso;
  */
 public class PicassoClient {
     private static Picasso picasso;
+    private static final int MAX_DISK_CACHE_SIZE = 100 * 1024 * 1024; // 100MB
 
     public static Picasso init(Context context) throws Exception {
-        if (picasso != null) {
+        if (picasso == null) {
             // Configure picasso to know about special thumbnail requests
             picasso = new Picasso.Builder(context)
-                    .downloader(new OkHttp3Downloader(context))
+                    .downloader(new OkHttp3Downloader(context, MAX_DISK_CACHE_SIZE))
                     .addRequestHandler(new FileThumbnailRequestHandler(DropboxGlobal.getClient(context)))
                     .build();
         }

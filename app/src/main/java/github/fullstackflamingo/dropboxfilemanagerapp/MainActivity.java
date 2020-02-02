@@ -2,6 +2,7 @@ package github.fullstackflamingo.dropboxfilemanagerapp;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,19 +23,22 @@ import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import java.util.List;
 
+import github.fullstackflamingo.dropboxfilemanagerapp.ui.LIST_MODE;
+import github.fullstackflamingo.dropboxfilemanagerapp.ui.UIListAdapter;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ViewGroup loadingSpinner;
     private RecyclerView recyclerView;
-    private FolderFileListAdapter mAdapter;
+    private UIListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
     private ActionBar actionBar;
-
     private Boolean loading = false;
 
     private String currentPath = "";
+    private Menu menu;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-
         loadingSpinner = findViewById(R.id.folder_file_list_item_spinner);
 
         recyclerView = findViewById(R.id.my_recycler_view);
@@ -51,11 +54,9 @@ public class MainActivity extends AppCompatActivity {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), LinearLayout.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
 
         // specify an adapter (see also next example)
-        mAdapter = new FolderFileListAdapter(this, new FolderFileListAdapter.Callback() {
+        mAdapter = new UIListAdapter(this, new UIListAdapter.Callback() {
             @Override
             public void onClick(String newPath) {
                 if (loading) return;
@@ -92,10 +93,10 @@ public class MainActivity extends AppCompatActivity {
                     actionBar.setDisplayHomeAsUpEnabled(currentPath != "");
                     // results list to ListItem array
                     List<Metadata> list = result.getEntries();
-                    FolderFileListAdapter.ListItem[] datasetArray = new FolderFileListAdapter.ListItem[list.size()];
+                    UIListAdapter.ListItem[] datasetArray = new UIListAdapter.ListItem[list.size()];
                     //for(int i = list.size() - 1; i >= 0; i--) {
                     for (int i = 0; i < list.size(); i += 1) {
-                        datasetArray[list.size() - 1 - i] = new FolderFileListAdapter.ListItem(list.get(i));
+                        datasetArray[list.size() - 1 - i] = new UIListAdapter.ListItem(list.get(i));
                     }
                     mAdapter.updateDataset(datasetArray);
                 }
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mainmenu, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -146,10 +148,18 @@ public class MainActivity extends AppCompatActivity {
                 getDBxList();
                 return true;
             case R.id.switch_to_list:
-                mAdapter.setListMode(FolderFileListAdapter.LIST_MODE.LIST);
+                mAdapter.setListMode(LIST_MODE.LIST);
+                menu.findItem(R.id.switch_to_card).setVisible(false);
+                menu.findItem(R.id.switch_to_list).setVisible(true);
+//                invalidateOptionsMenu();
+                getDBxList();
                 return true;
             case R.id.switch_to_card:
-                mAdapter.setListMode(FolderFileListAdapter.LIST_MODE.CARD);
+                mAdapter.setListMode(LIST_MODE.CARD);
+                menu.findItem(R.id.switch_to_card).setVisible(true);
+                menu.findItem(R.id.switch_to_list).setVisible(false);
+//                invalidateOptionsMenu();
+                getDBxList();
                 return true;
             /*case R.id.settings:
                 // TODO: Open dialog to set encrypted Dropbox access token via AppPreferences
