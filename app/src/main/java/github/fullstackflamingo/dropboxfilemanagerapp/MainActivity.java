@@ -149,15 +149,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.switch_to_list:
                 mAdapter.setListMode(LIST_MODE.LIST);
-                menu.findItem(R.id.switch_to_card).setVisible(false);
-                menu.findItem(R.id.switch_to_list).setVisible(true);
+                menu.findItem(R.id.switch_to_card).setVisible(true);
+                menu.findItem(R.id.switch_to_list).setVisible(false);
 //                invalidateOptionsMenu();
                 getDBxList();
                 return true;
             case R.id.switch_to_card:
                 mAdapter.setListMode(LIST_MODE.CARD);
-                menu.findItem(R.id.switch_to_card).setVisible(true);
-                menu.findItem(R.id.switch_to_list).setVisible(false);
+                menu.findItem(R.id.switch_to_card).setVisible(false);
+                menu.findItem(R.id.switch_to_list).setVisible(true);
 //                invalidateOptionsMenu();
                 getDBxList();
                 return true;

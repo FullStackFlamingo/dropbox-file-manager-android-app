@@ -62,14 +62,14 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
         int layout;
         switch (viewType) {
             case VIEW_TYPE_IMAGE:
-                layout = listMode == LIST_MODE.LIST ? R.layout.list_item_image : R.layout.list_item_image;
+                layout = listMode == LIST_MODE.LIST ? R.layout.list_item_image : R.layout.card_list_item_image;
                 break;
             case VIEW_TYPE_FILE:
-                layout = listMode == LIST_MODE.LIST ? R.layout.list_item_file : R.layout.list_item_file;
+                layout = listMode == LIST_MODE.LIST ? R.layout.list_item_file : R.layout.card_list_item_file;
                 break;
             case VIEW_TYPE_FOLDER:
             default:
-                layout = listMode == LIST_MODE.LIST ? R.layout.list_item_folder : R.layout.list_item_folder;
+                layout = listMode == LIST_MODE.LIST ? R.layout.list_item_folder : R.layout.card_list_item_folder;
         }
         ViewHolderListItem vh = new ViewHolderListItem(LayoutInflater.from(parent.getContext())
                 .inflate(layout, parent, false));
@@ -102,6 +102,7 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
                     @Override
                     public void onError(Exception e) {
                         holder.spinnerView.setVisibility(View.INVISIBLE);
+                        holder.imageView.setVisibility(View.VISIBLE);
                         Picasso.get().cancelRequest(holder.imageView);
                     }
                 });
