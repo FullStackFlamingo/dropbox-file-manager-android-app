@@ -37,11 +37,20 @@ public class FileThumbnailRequestHandler extends RequestHandler {
                 .scheme(SCHEME)
                 .authority(HOST)
                 .path(file.getPathLower())
-                .appendQueryParameter("large", "true")
+                .appendQueryParameter("thumb", "small")
                 .build();
     }
 
     public static Uri getThumbnailFromFileMetaData(FileMetadata file) {
+        return new Uri.Builder()
+                .scheme(SCHEME)
+                .authority(HOST)
+                .path(file.getPathLower())
+                .appendQueryParameter("thumb", "large")
+                .build();
+    }
+
+    public static Uri getImageFileMetaData(FileMetadata file) {
         return new Uri.Builder()
                 .scheme(SCHEME)
                 .authority(HOST)
@@ -58,15 +67,22 @@ public class FileThumbnailRequestHandler extends RequestHandler {
     public Result load(Request request, int networkPolicy) throws IOException {
 
         try {
-            ThumbnailSize size = ThumbnailSize.W640H480;
-            if (request.uri.getBooleanQueryParameter("large", false)) {
-                size = ThumbnailSize.W1024H768;
+            DbxDownloader<FileMetadata> downloader;
+            if (request.uri.getBooleanQueryParameter("thumb", false)) {
+                ThumbnailSize size = ThumbnailSize.W640H480;
+                if (request.uri.getQueryParameter("thumb") == "large") {
+                    size = ThumbnailSize.W1024H768;
+                }
+
+                downloader = mDbxClient.files().getThumbnailBuilder(request.uri.getPath())
+                        .withFormat(ThumbnailFormat.JPEG)
+                        .withSize(size)
+                        .start();
+            } else {
+                downloader = mDbxClient.files().downloadBuilder(request.uri.getPath())
+                        .start();
             }
-            DbxDownloader<FileMetadata> downloader =
-                    mDbxClient.files().getThumbnailBuilder(request.uri.getPath())
-                            .withFormat(ThumbnailFormat.JPEG)
-                            .withSize(size)
-                            .start();
+
 
             return new Result(Okio.source(downloader.getInputStream()), Picasso.LoadedFrom.NETWORK);
         } catch (DbxException e) {

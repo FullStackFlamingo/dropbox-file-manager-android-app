@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new UIListAdapter(this, new UIListAdapter.Callback() {
+        mAdapter = new UIListAdapter(getApplicationContext(), new UIListAdapter.Callback() {
             @Override
             public void onClick(String newPath) {
                 if (loading) return;

@@ -4,10 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    CardView_cardCornerRadius="5dp"
     android:layout_margin="5dp">
-    <RelativeLayout
-        android:layout_width="80dp"
-        android:layout_height="80dp">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
 
         <ImageView
             android:id="@+id/listitem__image"
@@ -21,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible" />
-    </RelativeLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <TextView
         android:id="@+id/listitem__text"
         android:layout_width="match_parent"

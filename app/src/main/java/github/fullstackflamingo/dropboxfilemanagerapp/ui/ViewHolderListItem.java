@@ -17,6 +17,8 @@ public class ViewHolderListItem extends RecyclerView.ViewHolder {
     public ImageView imageView = null;
 //    public Button deleteButtonView = null;
     public ProgressBar spinnerView = null;
+    public LIST_MODE listMode;
+
 
     public ViewHolderListItem(View item) {
         super(item);
@@ -29,5 +31,9 @@ public class ViewHolderListItem extends RecyclerView.ViewHolder {
 
     public void setViewType(int viewType) {
         this.viewType = viewType;
+    }
+
+    public void setlistMode(LIST_MODE listMode) {
+        this.listMode = listMode;
     }
 }

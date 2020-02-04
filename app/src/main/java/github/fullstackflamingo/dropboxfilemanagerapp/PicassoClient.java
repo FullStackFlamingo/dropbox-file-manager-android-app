@@ -18,9 +18,12 @@ public class PicassoClient {
         if (picasso == null) {
             // Configure picasso to know about special thumbnail requests
             picasso = new Picasso.Builder(context)
-                    .downloader(new OkHttp3Downloader(context, MAX_DISK_CACHE_SIZE))
+                    .downloader(new OkHttp3Downloader(context, Integer.MAX_VALUE))
                     .addRequestHandler(new FileThumbnailRequestHandler(DropboxGlobal.getClient(context)))
                     .build();
+            /* picasso.setIndicatorsEnabled(true);
+            picasso.setLoggingEnabled(true); */
+            Picasso.setSingletonInstance(picasso);
         }
         return picasso;
     }
@@ -31,11 +34,16 @@ public class PicassoClient {
         return picasso;
     }
 
-    public static void loadDropboxImageIntoListView(Context context, FileMetadata md, ImageView imageView, com.squareup.picasso.Callback cb) throws Exception {
+    public static void loadDropboxImageFileIntoListView(Context context, FileMetadata md, ImageView imageView, com.squareup.picasso.Callback cb) throws Exception {
+        if (picasso == null) PicassoClient.init(context);
+        picasso.load(FileThumbnailRequestHandler.getImageFileMetaData(md)).into(imageView, cb);
+    }
+
+    public static void loadDropboxThumbnailIntoListView(Context context, FileMetadata md, ImageView imageView, com.squareup.picasso.Callback cb) throws Exception {
         if (picasso == null) PicassoClient.init(context);
         picasso.load(FileThumbnailRequestHandler.getThumbnailFromFileMetaData(md)).into(imageView, cb);
     }
-    public static void loadDropboxImageIntoLargeView(Context context, FileMetadata md, ImageView imageView, com.squareup.picasso.Callback cb) throws Exception {
+    public static void loadDropboxLargeThumbnailIntoView(Context context, FileMetadata md, ImageView imageView, com.squareup.picasso.Callback cb) throws Exception {
         if (picasso == null) PicassoClient.init(context);
         picasso.load(FileThumbnailRequestHandler.getLargeThumbnailFromFileMetaData(md)).into(imageView, cb);
     }

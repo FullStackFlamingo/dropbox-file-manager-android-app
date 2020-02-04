@@ -24,6 +24,7 @@
     </RelativeLayout>
     <TextView
         android:id="@+id/listitem__text"
+        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

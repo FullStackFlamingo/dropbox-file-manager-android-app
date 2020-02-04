@@ -74,6 +74,7 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
         ViewHolderListItem vh = new ViewHolderListItem(LayoutInflater.from(parent.getContext())
                 .inflate(layout, parent, false));
         vh.setViewType(viewType);
+        vh.setlistMode(listMode);
         return vh;
     }
 
@@ -91,21 +92,27 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
 
         holder.textView.setText(md.getName());
         if (holder.viewType == VIEW_TYPE_IMAGE) {
-            try {
-                PicassoClient.loadDropboxImageIntoListView(ctx, (FileMetadata) md, holder.imageView, new com.squareup.picasso.Callback() {
-                    @Override
-                    public void onSuccess() {
-                        holder.spinnerView.setVisibility(View.INVISIBLE);
-                        holder.imageView.setVisibility(View.VISIBLE);
-                    }
+            com.squareup.picasso.Callback cb = new com.squareup.picasso.Callback() {
+                @Override
+                public void onSuccess() {
+                    holder.spinnerView.setVisibility(View.INVISIBLE);
+                    holder.imageView.setVisibility(View.VISIBLE);
+                }
 
-                    @Override
-                    public void onError(Exception e) {
-                        holder.spinnerView.setVisibility(View.INVISIBLE);
-                        holder.imageView.setVisibility(View.VISIBLE);
-                        Picasso.get().cancelRequest(holder.imageView);
-                    }
-                });
+                @Override
+                public void onError(Exception e) {
+                    holder.spinnerView.setVisibility(View.INVISIBLE);
+                    holder.imageView.setVisibility(View.VISIBLE);
+                    Picasso.get().cancelRequest(holder.imageView);
+                }
+            };
+            try {
+                if (holder.listMode == LIST_MODE.CARD) {
+                    PicassoClient.loadDropboxImageFileIntoListView(ctx, (FileMetadata) md, holder.imageView, cb);
+                } else {
+                    PicassoClient.loadDropboxThumbnailIntoListView(ctx, (FileMetadata) md, holder.imageView, cb);
+
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -117,7 +124,6 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
                 }
             });
         }
-
 
 
     }
