@@ -18,9 +18,12 @@ import github.fullstackflamingo.dropboxfilemanagerapp.R;
 
 public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
     private static final String TAG = "UIListAdapter";
-    private static final int VIEW_TYPE_FOLDER = 0;
-    private static final int VIEW_TYPE_FILE = 1;
-    private static final int VIEW_TYPE_IMAGE = 2;
+    private static final int VIEW_TYPE_FOLDER_CARD = 0;
+    private static final int VIEW_TYPE_FILE_CARD = 1;
+    private static final int VIEW_TYPE_IMAGE_CARD = 2;
+    private static final int VIEW_TYPE_FOLDER_LIST = 3;
+    private static final int VIEW_TYPE_FILE_LIST = 4;
+    private static final int VIEW_TYPE_IMAGE_LIST = 5;
 
     private ListItem[] dataset;
     private Callback listItemCallback;
@@ -61,15 +64,26 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
                                                  int viewType) {
         int layout;
         switch (viewType) {
-            case VIEW_TYPE_IMAGE:
-                layout = listMode == LIST_MODE.LIST ? R.layout.list_item_image : R.layout.card_list_item_image;
+            case VIEW_TYPE_IMAGE_LIST:
+                layout = R.layout.list_item_image;
                 break;
-            case VIEW_TYPE_FILE:
-                layout = listMode == LIST_MODE.LIST ? R.layout.list_item_file : R.layout.card_list_item_file;
+            case VIEW_TYPE_IMAGE_CARD:
+                layout = R.layout.card_list_item_image;
                 break;
-            case VIEW_TYPE_FOLDER:
+
+            case VIEW_TYPE_FILE_LIST:
+                layout = R.layout.list_item_file;
+                break;
+            case VIEW_TYPE_FILE_CARD:
+                layout = R.layout.card_list_item_file;
+                break;
+
+            case VIEW_TYPE_FOLDER_LIST:
+                layout = R.layout.list_item_folder;
+                break;
+            case VIEW_TYPE_FOLDER_CARD:
             default:
-                layout = listMode == LIST_MODE.LIST ? R.layout.list_item_folder : R.layout.card_list_item_folder;
+                layout = R.layout.card_list_item_folder;
         }
         ViewHolderListItem vh = new ViewHolderListItem(LayoutInflater.from(parent.getContext())
                 .inflate(layout, parent, false));
@@ -81,9 +95,9 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
     @Override
     public int getItemViewType(int position) {
         final Metadata md = dataset[position].md;
-        if (DropboxGlobal.isMetaDataAnImage(md)) return VIEW_TYPE_IMAGE;
-        if (DropboxGlobal.isMetaDataAFile(md)) return VIEW_TYPE_FILE;
-        return VIEW_TYPE_FOLDER;
+        if (DropboxGlobal.isMetaDataAnImage(md)) return listMode == LIST_MODE.CARD ? VIEW_TYPE_IMAGE_CARD : VIEW_TYPE_IMAGE_LIST;
+        if (DropboxGlobal.isMetaDataAFile(md)) return listMode == LIST_MODE.CARD ? VIEW_TYPE_FILE_CARD : VIEW_TYPE_FILE_LIST;
+        return listMode == LIST_MODE.CARD ? VIEW_TYPE_FOLDER_CARD : VIEW_TYPE_FOLDER_LIST;
     }
 
     @Override
@@ -91,7 +105,7 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
         final Metadata md = dataset[position].md;
 
         holder.textView.setText(md.getName());
-        if (holder.viewType == VIEW_TYPE_IMAGE) {
+        if (holder.viewType == VIEW_TYPE_IMAGE_CARD || holder.viewType == VIEW_TYPE_IMAGE_LIST) {
             com.squareup.picasso.Callback cb = new com.squareup.picasso.Callback() {
                 @Override
                 public void onSuccess() {
@@ -117,7 +131,7 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
                 e.printStackTrace();
             }
         }
-        if (holder.viewType == VIEW_TYPE_FOLDER) {
+        if (holder.viewType == VIEW_TYPE_FOLDER_CARD || holder.viewType == VIEW_TYPE_FOLDER_LIST) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     listItemCallback.onClick(md.getPathDisplay());
@@ -131,7 +145,7 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
     @Override
     public void onViewRecycled(@NonNull ViewHolderListItem holder) {
         super.onViewRecycled(holder);
-        if (holder.viewType == VIEW_TYPE_IMAGE) {
+        if (holder.viewType == VIEW_TYPE_IMAGE_CARD || holder.viewType == VIEW_TYPE_IMAGE_LIST) {
             Picasso.get().cancelRequest(holder.imageView);
             holder.spinnerView.setVisibility(View.VISIBLE);
             holder.imageView.setVisibility(View.INVISIBLE);
