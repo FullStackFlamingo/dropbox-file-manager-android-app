@@ -12,16 +12,15 @@ import com.squareup.picasso.Picasso;
  */
 public class PicassoClient {
     private static Picasso picasso;
-    private static final int MAX_DISK_CACHE_SIZE = 100 * 1024 * 1024; // 100MB
 
     public static Picasso init(Context context) throws Exception {
         if (picasso == null) {
             // Configure picasso to know about special thumbnail requests
             picasso = new Picasso.Builder(context)
                     .downloader(new OkHttp3Downloader(context, Integer.MAX_VALUE))
-                    .addRequestHandler(new FileThumbnailRequestHandler(DropboxGlobal.getClient(context)))
+                    .addRequestHandler(new FileThumbnailRequestHandler(context, DropboxGlobal.getClient(context)))
                     .build();
-            /* picasso.setIndicatorsEnabled(true);
+            /*  picasso.setIndicatorsEnabled(true);
             picasso.setLoggingEnabled(true); */
             Picasso.setSingletonInstance(picasso);
         }
