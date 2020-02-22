@@ -95,6 +95,7 @@ public class FileThumbnailRequestHandler extends RequestHandler {
             String targetFilename = request.uri.getPath();
             targetFilename += request.uri.getQuery() != null ? request.uri.getQuery() : "";
             targetFilename = targetFilename.replaceAll("\\W+", "");
+            targetFilename += ".jpg";
             File cachedFile = new File(cacheDir, targetFilename);
 
             if (!cachedFile.exists()) {
