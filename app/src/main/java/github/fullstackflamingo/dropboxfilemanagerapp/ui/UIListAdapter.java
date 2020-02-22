@@ -28,7 +28,7 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
     private ListItem[] dataset;
     private Callback listItemCallback;
     private Context ctx;
-    private LIST_MODE listMode = LIST_MODE.LIST;
+    private LIST_MODE listMode = LIST_MODE.CARD;
 
     public void setListMode(LIST_MODE lm) {
         listMode = lm;
@@ -72,18 +72,14 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
                 break;
 
             case VIEW_TYPE_FILE_LIST:
-                layout = R.layout.list_item_file;
-                break;
             case VIEW_TYPE_FILE_CARD:
-                layout = R.layout.card_list_item_file;
+                layout = R.layout.list_item_file;
                 break;
 
             case VIEW_TYPE_FOLDER_LIST:
-                layout = R.layout.list_item_folder;
-                break;
             case VIEW_TYPE_FOLDER_CARD:
             default:
-                layout = R.layout.card_list_item_folder;
+                layout = R.layout.list_item_folder;
         }
         ViewHolderListItem vh = new ViewHolderListItem(LayoutInflater.from(parent.getContext())
                 .inflate(layout, parent, false));
@@ -122,7 +118,7 @@ public class UIListAdapter extends RecyclerView.Adapter<ViewHolderListItem> {
             };
             try {
                 if (holder.listMode == LIST_MODE.CARD) {
-                    PicassoClient.loadDropboxImageFileIntoListView(ctx, (FileMetadata) md, holder.imageView, cb);
+                    PicassoClient.loadDropboxLargeThumbnailIntoView(ctx, (FileMetadata) md, holder.imageView, cb);
                 } else {
                     PicassoClient.loadDropboxThumbnailIntoListView(ctx, (FileMetadata) md, holder.imageView, cb);
 

@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (currentPath == "") {
+        if (currentPath.equals("")) {
             super.onBackPressed();
             return;
         }

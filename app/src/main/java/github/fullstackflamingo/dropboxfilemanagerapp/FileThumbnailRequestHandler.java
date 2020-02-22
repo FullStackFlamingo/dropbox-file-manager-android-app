@@ -8,6 +8,7 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ThumbnailFormat;
+import com.dropbox.core.v2.files.ThumbnailMode;
 import com.dropbox.core.v2.files.ThumbnailSize;
 
 import okio.Okio;
@@ -61,7 +62,7 @@ public class FileThumbnailRequestHandler extends RequestHandler {
                 .scheme(SCHEME)
                 .authority(HOST)
                 .path(file.getPathLower())
-                .appendQueryParameter("thumb", "small")
+                .appendQueryParameter("thumb", "large")
                 .build();
     }
 
@@ -70,7 +71,7 @@ public class FileThumbnailRequestHandler extends RequestHandler {
                 .scheme(SCHEME)
                 .authority(HOST)
                 .path(file.getPathLower())
-                .appendQueryParameter("thumb", "large")
+                .appendQueryParameter("thumb", "small")
                 .build();
     }
 
@@ -99,13 +100,14 @@ public class FileThumbnailRequestHandler extends RequestHandler {
             if (!cachedFile.exists()) {
                 OutputStream downloadOutputStream = ctx.getContentResolver().openOutputStream(Uri.fromFile(cachedFile));
                 if (request.uri.getBooleanQueryParameter("thumb", false)) {
-                    ThumbnailSize size = ThumbnailSize.W640H480;
-                    if (request.uri.getQueryParameter("thumb") == "large") {
-                        size = ThumbnailSize.W1024H768;
+                    ThumbnailSize maxThumbSize = ThumbnailSize.W640H480;
+                    String querySize = request.uri.getQueryParameter("thumb");
+                    if (querySize.equals("large")) {
+                        maxThumbSize = ThumbnailSize.W2048H1536;
                     }
                     mDbxClient.files().getThumbnailBuilder(request.uri.getPath())
                             .withFormat(ThumbnailFormat.JPEG)
-                            .withSize(size)
+                            .withSize(maxThumbSize)
                             .download(downloadOutputStream);
                 } else {
                     mDbxClient.files().downloadBuilder(request.uri.getPath()).download(downloadOutputStream);

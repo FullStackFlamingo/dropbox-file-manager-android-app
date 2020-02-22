@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/listitem"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    CardView_cardCornerRadius="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    CardView_cardCornerRadius="5dp"
     android:layout_margin="5dp">
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="300dp">
 
-        <ImageView
-            android:id="@+id/listitem__image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:scaleType="centerCrop"/>
-
-        <ProgressBar
-            android:id="@+id/listitem__spinner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <TextView
-        android:id="@+id/listitem__text"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <ImageView
+                android:id="@+id/listitem__image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:visibility="invisible" />
+
+            <ProgressBar
+                android:id="@+id/listitem__spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/listitem__text"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:padding="4dp"/>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
