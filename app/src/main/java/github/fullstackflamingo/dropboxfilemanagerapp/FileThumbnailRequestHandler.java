@@ -91,7 +91,9 @@ public class FileThumbnailRequestHandler extends RequestHandler {
     public Result load(Request request, int networkPolicy) throws IOException {
         try {
             Picasso.LoadedFrom loadedFrom = Picasso.LoadedFrom.DISK;
-            String targetFilename = (request.uri.getPath() + request.uri.getQuery()).replaceAll("\\W+", "");
+            String targetFilename = request.uri.getPath();
+            targetFilename += request.uri.getQuery() != null ? request.uri.getQuery() : "";
+            targetFilename = targetFilename.replaceAll("\\W+", "");
             File cachedFile = new File(cacheDir, targetFilename);
 
             if (!cachedFile.exists()) {
