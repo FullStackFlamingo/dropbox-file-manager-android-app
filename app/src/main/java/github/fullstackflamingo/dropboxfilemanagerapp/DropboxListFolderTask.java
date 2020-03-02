@@ -53,7 +53,7 @@ class DropboxListFolderTask extends AsyncTask<String, Void, ListFolderResult> {
                 // merge results with new results and loop
                 List<Metadata> newList = new ArrayList<Metadata>(result.getEntries());
                 newList.addAll(moreResults.getEntries());
-                result = new ListFolderResult(newList, result.getCursor(), result.getHasMore());
+                result = new ListFolderResult(newList, moreResults.getCursor(), moreResults.getHasMore());
             }
 
             // sort reverse alphabetical to show newest datestamp-named files first
